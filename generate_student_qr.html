@@ -10,7 +10,6 @@
 <h2>Generate Student QR</h2>
 
 <div class="card">
-
   <label>Student ID</label>
   <input id="id" readonly>
 
@@ -25,11 +24,10 @@
 
   <label>Address</label>
   <input id="address">
-
 </div>
 
-<!-- PVC CARD -->
-<div class="pvc-card" id="printCard">
+<!-- PVC CARD (initially empty) -->
+<div class="pvc-card" id="printCard" style="display:none;">
   <div class="card-header">
     <div class="school-name">ABC COACHING CENTRE</div>
     <div class="card-title">STUDENT ID CARD</div>
@@ -39,7 +37,9 @@
     <div class="student-info">
       <div><b>ID:</b> <span id="cardId"></span></div>
       <div><b>Name:</b> <span id="cardName"></span></div>
+      <div><b>Father:</b> <span id="cardFather"></span></div>
       <div><b>DOB:</b> <span id="cardDob"></span></div>
+      <div><b>Address:</b> <span id="cardAddress"></span></div>
     </div>
 
     <div class="qr-area" id="qr"></div>
@@ -51,7 +51,7 @@
 </div>
 
 <button onclick="saveStudent()">Save Student</button>
-<button onclick="printCard()">Print PVC Card</button>
+<button onclick="printPVC()">Print PVC Card</button>
 
 <script src="generate_student_qr.js"></script>
 </body>
