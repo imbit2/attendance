@@ -1,195 +1,254 @@
 /* =========================
-   GLOBAL (SAFE MINIMAL)
-   Applies to all pages
+   GLOBAL RESET & BASE
 ========================= */
+* {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 12px;
   background: #f4f6f8;
+  color: #333;
 }
 
-.container {
-  max-width: 1100px;
-  margin: auto;
-  padding: 15px;
-}
-
+/* =========================
+   HEADINGS
+========================= */
 h1, h2, h3 {
-  margin-bottom: 15px;
-  color: #2c3e50;
-}
-
-label {
+  margin: 10px 0;
   font-weight: bold;
-  display: block;
-  margin-bottom: 5px;
 }
 
-/* Buttons – common look */
-button {
+/* =========================
+   BUTTONS (GLOBAL)
+========================= */
+button,
+.btn {
   background: #3498db;
   color: #fff;
   border: none;
-  padding: 10px 14px;
-  border-radius: 6px;
+  padding: 14px 18px;
+  font-size: 16px;
+  border-radius: 8px;
   cursor: pointer;
+  width: 100%;
+  margin-top: 10px;
 }
 
-button:hover {
-  opacity: 0.9;
+button:hover,
+.btn:hover {
+  background: #2e86c1;
 }
 
-/* Tables – attendance & student list */
+/* =========================
+   INPUTS & LABELS
+========================= */
+label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* =========================
+   PAGE CONTAINER
+========================= */
+.page,
+.container {
+  max-width: 1100px;
+  margin: auto;
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+/* =========================
+   MAIN MENU
+========================= */
+.main-menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.main-menu button,
+.main-menu a {
+  background: #3498db;
+  color: #fff;
+  text-decoration: none;
+  text-align: center;
+  padding: 16px;
+  border-radius: 10px;
+  flex: 1 1 180px;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* =========================
+   TABLES (STUDENT LIST / ATTENDANCE)
+========================= */
 table {
   width: 100%;
   border-collapse: collapse;
-  background: #fff;
+  margin-top: 15px;
 }
 
 th, td {
+  padding: 12px;
   border: 1px solid #ddd;
-  padding: 10px;
   text-align: left;
+  font-size: 14px;
 }
 
 th {
   background: #3498db;
-  color: white;
+  color: #fff;
 }
-
-/* Inputs default (attendance pages) */
-input, select {
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
 
 /* =========================
-   GENERATE STUDENT QR PAGE
-   (SCOPED – DOES NOT AFFECT OTHERS)
+   STUDENT LIST LINKS
 ========================= */
-
-.qr-page {
-  background: #f4f6f8;
-}
-
-.qr-page .card-box {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-  margin-bottom: 20px;
-}
-
-.qr-page input,
-.qr-page textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.qr-page button {
-  width: 100%;
-  padding: 12px;
-  font-size: 15px;
+.student-link {
+  color: #3498db;
   font-weight: bold;
-  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
+/* =========================
+   QR PAGE
+========================= */
+.qr-page {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
 /* =========================
-   PVC STUDENT ID CARD
-   CR80 SIZE (PRINTABLE)
+   PVC ID CARD (CR80 SIZE)
 ========================= */
-
-#pvcCard {
+.pvc-card {
   width: 85.6mm;
-  height: 54mm;
-  background: linear-gradient(135deg, #3b6cb7, #2c3e50);
-  color: white;
-  border-radius: 8px;
-  padding: 10px;
-  box-sizing: border-box;
-  font-size: 12px;
+  height: 53.98mm;
+  background: linear-gradient(135deg, #3498db, #2e86c1);
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
-#pvcLeft {
-  width: 65%;
-}
-
-#pvcLeft h3 {
-  margin: 0;
+.pvc-details {
   font-size: 14px;
+  line-height: 1.4;
 }
 
-#pvcLeft p {
-  margin: 3px 0;
-  font-size: 13px;
-  font-weight: bold;
+.pvc-details strong {
+  font-size: 16px;
 }
 
-#pvcRight {
-  width: 35%;
-  text-align: center;
+.pvc-qr img {
+  width: 90px;
+  height: 90px;
+  background: #fff;
+  padding: 4px;
+  border-radius: 6px;
 }
 
-#pvcRight img {
-  width: 80px;
-  height: 80px;
-  background: white;
-  padding: 3px;
-  border-radius: 4px;
-}
-
-#printCard {
-  margin-top: 15px;
-  text-align: center;
-}
-
-
-/* =========================
-   PRINT SETTINGS (PVC)
-========================= */
-
+/* PRINT PVC */
 @media print {
-  body * {
-    visibility: hidden;
+  body {
+    background: #fff;
   }
 
-  #pvcCard, #pvcCard * {
-    visibility: visible;
+  .no-print {
+    display: none !important;
   }
 
-  #pvcCard {
-    position: absolute;
-    left: 0;
-    top: 0;
+  .pvc-card {
+    box-shadow: none;
+    page-break-inside: avoid;
   }
 }
 
-
 /* =========================
-   MOBILE RESPONSIVE
+   MOBILE OPTIMIZATION
 ========================= */
-
 @media (max-width: 768px) {
-  .container {
+
+  body {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .main-menu {
+    flex-direction: column;
+  }
+
+  .main-menu button,
+  .main-menu a {
+    width: 100%;
+    font-size: 17px;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     padding: 10px;
+    background: #fff;
   }
 
-  th, td {
-    font-size: 13px;
+  td {
+    border: none;
+    padding: 6px 0;
+    font-size: 15px;
   }
 
-  button {
-    font-size: 14px;
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    color: #555;
+  }
+
+  .pvc-card {
+    transform: scale(1.05);
+    margin: auto;
   }
 }
