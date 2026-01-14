@@ -136,7 +136,7 @@ input, textarea {
   padding: 3px;
   border-radius: 4px;
   display: flex;
-  align-items: center;
+  align-items: right;
   justify-content: center;
   flex-shrink: 0; /* 🔴 prevents shrinking */
 }
@@ -202,6 +202,7 @@ th {
     page-break-inside: avoid;
   }
 }
+
 
 
 
