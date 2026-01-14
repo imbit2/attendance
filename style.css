@@ -97,7 +97,7 @@ input, textarea {
   background: linear-gradient(135deg, #2c6fb7, #4fa3e3);
   color: #fff;
   border-radius: 10px;
-  padding: 8mm;
+  padding: 4mm;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -202,6 +202,7 @@ th {
     page-break-inside: avoid;
   }
 }
+
 
 
 
