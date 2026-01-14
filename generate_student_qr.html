@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Generate Student QR</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+</head>
+<body>
+
+<h2>Generate Student QR</h2>
+
+<label>ID</label>
+<input id="id" readonly>
+
+<label>Name</label>
+<input id="name">
+
+<label>Father</label>
+<input id="father">
+
+<label>DOB</label>
+<input type="date" id="dob">
+
+<label>Address</label>
+<input id="address">
+
+<div id="qr"></div>
+
+<button onclick="save()">Save</button>
+<button onclick="window.print()">Print Card</button>
+
+<script src="generate_student_qr.js"></script>
+</body>
+</html>
