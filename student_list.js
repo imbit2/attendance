@@ -1,27 +1,41 @@
 function load() {
-  let q = document.getElementById("q").value.toLowerCase();
-  let students = JSON.parse(localStorage.getItem("students") || "[]");
-  let t = document.getElementById("t");
+  const q = document.getElementById("q").value.toLowerCase();
+  const students = JSON.parse(localStorage.getItem("students") || "[]");
+  const table = document.getElementById("t");
 
-  t.innerHTML = "<tr><th>ID</th><th>Name</th></tr>";
-  students.filter(s =>
-    s.id.toLowerCase().includes(q) ||
-    s.name.toLowerCase().includes(q)
-  ).forEach(s => {
-    t.innerHTML += `<tr>
-      <td onclick="openEdit('${s.id}')">${s.id}</td>
-      <td>${s.name}</td>
-    </tr>`;
-  });
-}
+  table.innerHTML = `
+    <tr>
+      <th>Student ID</th>
+      <th>Student Name</th>
+    </tr>
+  `;
 
-function clearSearch() {
-  q.value = "";
-  load();
+  students
+    .filter(s =>
+      s.id.toLowerCase().includes(q) ||
+      (s.name || "").toLowerCase().includes(q)
+    )
+    .forEach(s => {
+      table.innerHTML += `
+        <tr>
+          <td style="color:#3498db;cursor:pointer;font-weight:600"
+              onclick="openEdit('${s.id}')">
+              ${s.id}
+          </td>
+          <td>${s.name || "-"}</td>
+        </tr>
+      `;
+    });
 }
 
 function openEdit(id) {
-  location.href = "generate_student_qr.html?id=" + id;
+  window.location.href = "edit_student.html?id=" + encodeURIComponent(id);
 }
 
+function clearSearch() {
+  document.getElementById("q").value = "";
+  load();
+}
+
+// Load on page open
 load();
