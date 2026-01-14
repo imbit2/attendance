@@ -1,177 +1,193 @@
-/* RESET */
+/* =========================
+   GLOBAL
+========================= */
 * {
   box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* BODY */
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
   margin: 0;
   padding: 12px;
-  background: #f4f6fb;
+  background: #f4f6f8;
   color: #333;
 }
 
-/* HEADINGS */
-h2 {
-  text-align: center;
-  margin: 10px 0 16px;
+h1, h2, h3 {
+  margin: 8px 0;
   color: #2c3e50;
 }
 
-/* LABELS */
 label {
   font-weight: 600;
-  color: #34495e;
-  margin-top: 10px;
   display: block;
+  margin-bottom: 4px;
+  color: #2c3e50;
 }
 
-/* INPUTS */
-input, select {
+/* =========================
+   INPUTS
+========================= */
+input, select, textarea {
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  margin-top: 6px;
+  padding: 10px;
   margin-bottom: 12px;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid #ccc;
+  font-size: 14px;
 }
 
-input:focus {
+input:focus, textarea:focus {
   outline: none;
   border-color: #3498db;
-  box-shadow: 0 0 0 2px rgba(52,152,219,.2);
 }
 
-/* BUTTONS — ALL SAME COLOR */
+.readonly {
+  background: #eaeaea !important;
+  color: #555;
+}
+
+/* =========================
+   BUTTONS
+========================= */
 button {
   width: 100%;
-  padding: 14px;
-  font-size: 17px;
-  font-weight: 600;
-  border-radius: 10px;
+  padding: 12px;
   border: none;
-  cursor: pointer;
-  margin-bottom: 12px;
+  border-radius: 8px;
   background: #3498db;
   color: white;
-  transition: 0.2s;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 10px;
 }
 
 button:hover {
   opacity: 0.9;
 }
 
-/* TABLE */
-.table {
+button.secondary {
+  background: #7f8c8d;
+}
+
+/* =========================
+   TABLES
+========================= */
+table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.table th {
-  background: #3498db;
-  color: white;
-  padding: 12px;
-  font-size: 14px;
-}
-
-.table td {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  text-align: center;
-  font-size: 14px;
-}
-
-/* QR BOX */
-#qr {
-  display: flex;
-  justify-content: center;
-  margin: 16px 0;
-}
-
-/* ERROR / INFO */
-.error {
-  text-align: center;
-  color: #e74c3c;
-  font-weight: bold;
-  margin: 10px 0;
-}
-
-/* CARD STYLE */
-.card {
-  background: white;
-  padding: 16px;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   margin-bottom: 16px;
 }
 
-/* DESKTOP */
-@media (min-width: 600px) {
-  body {
-    max-width: 500px;
-    margin: auto;
-  }
-}
-/* ================= PVC STUDENT CARD ================= */
-
-.pvc-card {
-  width: 85.6mm;
-  height: 53.98mm;
-  background: #ffffff;
-  border-radius: 10px;
-  border: 1.5px solid #3498db;
-  margin: 20px auto;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  overflow: hidden;
-  font-size: 10px;
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
 }
 
-.card-header {
-  background: #3498db;
-  color: #fff;
-  text-align: center;
-  padding: 4px;
+th {
+  background: #ecf0f1;
+  font-weight: 700;
 }
 
-.school-name {
+td.clickable {
+  color: #3498db;
   font-weight: bold;
-  font-size: 11px;
+  cursor: pointer;
 }
 
-.card-title {
-  font-size: 9px;
+/* =========================
+   CARD / SECTION
+========================= */
+.card {
+  background: white;
+  padding: 14px;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  margin-bottom: 16px;
 }
 
-.card-body {
-  display: flex;
-  padding: 6px;
+/* =========================
+   PVC ID CARD (CR80)
+========================= */
+#printCard {
+  display: none;
+  width: 3.375in;
+  height: 2.125in;
+  background: linear-gradient(135deg, #3498db, #1f5fa5);
+  border-radius: 14px;
+  color: white;
+  padding: 12px;
+  margin: 20px auto;
+  position: relative;
 }
 
-.student-info {
-  flex: 1;
-  font-size: 9px;
-  line-height: 1.4;
-}
-
-.qr-area {
-  width: 24mm;
-  height: 24mm;
-}
-
-.card-footer {
+#printCard .school {
+  font-size: 14px;
+  font-weight: bold;
   text-align: center;
-  font-size: 7px;
-  color: #555;
-  border-top: 1px solid #eee;
-  padding: 2px;
+  margin-bottom: 6px;
 }
 
-/* PRINT ONLY CARD */
+#printCard .row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#printCard .left {
+  width: 60%;
+}
+
+#printCard .right {
+  width: 38%;
+  text-align: right;
+}
+
+#printCard .label {
+  font-size: 11px;
+  opacity: 0.85;
+}
+
+#printCard .value {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+#cardName {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+#qr {
+  background: white;
+  padding: 4px;
+  border-radius: 6px;
+  display: inline-block;
+}
+
+/* =========================
+   SEARCH BAR
+========================= */
+.search-row {
+  display: flex;
+  gap: 6px;
+}
+
+.search-row input {
+  flex: 1;
+}
+
+.search-row button {
+  width: auto;
+  padding: 10px 14px;
+}
+
+/* =========================
+   PRINT SETTINGS
+========================= */
 @media print {
   body * {
     visibility: hidden;
@@ -185,8 +201,29 @@ button:hover {
     position: absolute;
     left: 0;
     top: 0;
-    box-shadow: none;
-    border: 1px solid #000;
+    margin: 0;
   }
 }
 
+/* =========================
+   MOBILE OPTIMIZATION
+========================= */
+@media (max-width: 600px) {
+  body {
+    padding: 8px;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 11px;
+  }
+
+  th, td {
+    font-size: 13px;
+    padding: 8px;
+  }
+}
