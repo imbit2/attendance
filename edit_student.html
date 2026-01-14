@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Edit Student</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h2>Edit Student</h2>
+
+<label>Student ID</label>
+<input id="studentId" readonly>
+
+<label>Student Name</label>
+<input id="studentName">
+
+<label>Father's Name</label>
+<input id="fatherName">
+
+<label>DOB</label>
+<input type="date" id="dob">
+
+<label>Address</label>
+<input id="address">
+
+<button onclick="updateStudent()">Update Student</button>
+<button onclick="showHistory()">Attendance History</button>
+<button onclick="reprintCard()">Reprint ID Card</button>
+
+<div id="history"></div>
+
+<script src="edit_student.js"></script>
+</body>
+</html>
