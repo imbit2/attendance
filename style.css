@@ -1,34 +1,91 @@
 /* =========================
-   GLOBAL
+   GLOBAL (SAFE MINIMAL)
+   Applies to all pages
 ========================= */
-* {
-  box-sizing: border-box;
-  font-family: Arial, Helvetica, sans-serif;
-}
 
 body {
+  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
-  padding: 12px;
+  padding: 0;
   background: #f4f6f8;
-  color: #333;
+}
+
+.container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 15px;
 }
 
 h1, h2, h3 {
-  margin: 8px 0;
+  margin-bottom: 15px;
   color: #2c3e50;
 }
 
 label {
-  font-weight: 600;
+  font-weight: bold;
   display: block;
-  margin-bottom: 4px;
-  color: #2c3e50;
+  margin-bottom: 5px;
 }
 
+/* Buttons – common look */
+button {
+  background: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Tables – attendance & student list */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+th {
+  background: #3498db;
+  color: white;
+}
+
+/* Inputs default (attendance pages) */
+input, select {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+
 /* =========================
-   INPUTS
+   GENERATE STUDENT QR PAGE
+   (SCOPED – DOES NOT AFFECT OTHERS)
 ========================= */
-input, select, textarea {
+
+.qr-page {
+  background: #f4f6f8;
+}
+
+.qr-page .card-box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+  margin-bottom: 20px;
+}
+
+.qr-page input,
+.qr-page textarea {
   width: 100%;
   padding: 10px;
   margin-bottom: 12px;
@@ -37,193 +94,102 @@ input, select, textarea {
   font-size: 14px;
 }
 
-input:focus, textarea:focus {
-  outline: none;
-  border-color: #3498db;
-}
-
-.readonly {
-  background: #eaeaea !important;
-  color: #555;
-}
-
-/* =========================
-   BUTTONS
-========================= */
-button {
+.qr-page button {
   width: 100%;
   padding: 12px;
-  border: none;
-  border-radius: 8px;
-  background: #3498db;
-  color: white;
   font-size: 15px;
   font-weight: bold;
-  cursor: pointer;
-  margin-bottom: 10px;
+  border-radius: 8px;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
-button.secondary {
-  background: #7f8c8d;
-}
 
 /* =========================
-   TABLES
+   PVC STUDENT ID CARD
+   CR80 SIZE (PRINTABLE)
 ========================= */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: white;
-  margin-bottom: 16px;
-}
 
-th, td {
-  padding: 10px;
-  border-bottom: 1px solid #ddd;
-  text-align: left;
-}
-
-th {
-  background: #ecf0f1;
-  font-weight: 700;
-}
-
-td.clickable {
-  color: #3498db;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* =========================
-   CARD / SECTION
-========================= */
-.card {
-  background: white;
-  padding: 14px;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  margin-bottom: 16px;
-}
-
-/* =========================
-   PVC ID CARD (CR80)
-========================= */
-#printCard {
-  display: none;
-  width: 3.375in;
-  height: 2.125in;
-  background: linear-gradient(135deg, #3498db, #1f5fa5);
-  border-radius: 14px;
+#pvcCard {
+  width: 85.6mm;
+  height: 54mm;
+  background: linear-gradient(135deg, #3b6cb7, #2c3e50);
   color: white;
-  padding: 12px;
-  margin: 20px auto;
-  position: relative;
-}
-
-#printCard .school {
-  font-size: 14px;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 6px;
-}
-
-#printCard .row {
+  border-radius: 8px;
+  padding: 10px;
+  box-sizing: border-box;
+  font-size: 12px;
   display: flex;
   justify-content: space-between;
 }
 
-#printCard .left {
-  width: 60%;
+#pvcLeft {
+  width: 65%;
 }
 
-#printCard .right {
-  width: 38%;
-  text-align: right;
+#pvcLeft h3 {
+  margin: 0;
+  font-size: 14px;
 }
 
-#printCard .label {
-  font-size: 11px;
-  opacity: 0.85;
+#pvcLeft p {
+  margin: 3px 0;
+  font-size: 13px;
+  font-weight: bold;
 }
 
-#printCard .value {
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 4px;
+#pvcRight {
+  width: 35%;
+  text-align: center;
 }
 
-#cardName {
-  font-size: 18px;
-  font-weight: 800;
-}
-
-#qr {
+#pvcRight img {
+  width: 80px;
+  height: 80px;
   background: white;
-  padding: 4px;
-  border-radius: 6px;
-  display: inline-block;
+  padding: 3px;
+  border-radius: 4px;
 }
+
+#printCard {
+  margin-top: 15px;
+  text-align: center;
+}
+
 
 /* =========================
-   SEARCH BAR
+   PRINT SETTINGS (PVC)
 ========================= */
-.search-row {
-  display: flex;
-  gap: 6px;
-}
 
-.search-row input {
-  flex: 1;
-}
-
-.search-row button {
-  width: auto;
-  padding: 10px 14px;
-}
-
-/* =========================
-   PRINT SETTINGS
-========================= */
 @media print {
   body * {
     visibility: hidden;
   }
 
-  #printCard, #printCard * {
+  #pvcCard, #pvcCard * {
     visibility: visible;
   }
 
-  #printCard {
+  #pvcCard {
     position: absolute;
     left: 0;
     top: 0;
-    margin: 0;
   }
 }
 
+
 /* =========================
-   MOBILE OPTIMIZATION
+   MOBILE RESPONSIVE
 ========================= */
-@media (max-width: 600px) {
-  body {
-    padding: 8px;
-  }
 
-  h1 {
-    font-size: 18px;
-  }
-
-  button {
-    font-size: 14px;
-    padding: 11px;
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
   }
 
   th, td {
     font-size: 13px;
-    padding: 8px;
+  }
+
+  button {
+    font-size: 14px;
   }
 }
