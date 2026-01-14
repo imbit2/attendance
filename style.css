@@ -89,63 +89,57 @@ input, textarea {
 }
 
 /* =========================
-   PVC ID CARD (CR80 FIXED)
+   PVC ID CARD – HARD FIX
 ========================= */
+
 .pvc-card {
   width: 86mm;
   height: 54mm;
   background: linear-gradient(135deg, #2c6fb7, #4fa3e3);
   color: #fff;
   border-radius: 10px;
-  padding: 4mm;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  padding: 6mm;
   margin: 20px auto;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.3);
-  overflow: hidden; /* 🔴 VERY IMPORTANT */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.35);
+
+  display: grid;
+  grid-template-columns: 1fr 26mm; /* TEXT | QR */
+  column-gap: 6mm;
+
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
-/* LEFT SIDE DETAILS */
-.pvc-details {
-  width: 60%;
-  font-size: 11px;
-  line-height: 1.45;
+/* TEXT AREA */
+.pvc-card *:not(img) {
+  font-size: 15px;
+  line-height: 1.4;
 }
 
-.pvc-details .school {
-  font-size: 10px;
+.pvc-card .school {
   font-weight: bold;
+  font-size: 14px;
+}
+
+.pvc-card .title {
+  font-size: 13px;
   margin-bottom: 4px;
 }
 
-.pvc-details .title {
-  font-size: 15px;
-  margin-bottom: 6px;
-}
+/* FORCE QR INTO RIGHT COLUMN */
+.pvc-card img {
+  grid-column: 2;
+  grid-row: 1 / span 20;
 
-.pvc-details strong {
-  font-size: 12px;
-}
-
-/* RIGHT SIDE QR */
-.pvc-qr {
-  width: 18mm;
-  height: 18mm;
+  width: 24mm;
+  height: 24mm;
   background: #fff;
   padding: 3px;
   border-radius: 4px;
-  display: flex;
-  align-items: right;
-  justify-content: center;
-  flex-shrink: 0; /* 🔴 prevents shrinking */
-}
 
-.pvc-qr img {
-  width: 100%;
-  height: 100%;
+  justify-self: center;
+  align-self: end;
 }
-
 
 /* =========================
    STUDENT LIST TABLE
@@ -202,6 +196,7 @@ th {
     page-break-inside: avoid;
   }
 }
+
 
 
 
