@@ -209,4 +209,28 @@ th, td {
     flex: 1 1 30%;
   }
 }
+/* ===============================
+   MOBILE APP–LIKE BUTTONS
+================================ */
+
+button,
+.btn {
+  min-height: 56px;          /* App standard (Android / iOS) */
+  font-size: 18px;           /* Bigger text */
+  font-weight: 600;
+  border-radius: 14px;       /* Softer corners */
+  padding: 16px 18px;
+  letter-spacing: 0.3px;
+}
+
+/* Optional: pressed feel */
+button:active {
+  transform: scale(0.97);
+}
+
+/* Optional: space between stacked buttons */
+button + button {
+  margin-top: 14px;
+}
+
 
