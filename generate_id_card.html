@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Student ID Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+<div class="page-container">
+  <h2 class="page-title">Student ID Card</h2>
+
+  <div class="id-card" id="idCard">
+    <div class="details">
+      <p><strong>ID:</strong> <span id="cId"></span></p>
+      <p><strong>Name:</strong> <span id="cName"></span></p>
+      <p><strong>Father:</strong> <span id="cFather"></span></p>
+      <p><strong>DOB:</strong> <span id="cDob"></span></p>
+      <p><strong>Address:</strong> <span id="cAddress"></span></p>
+    </div>
+
+    <div class="qr-box">
+      <div id="qrCode"></div>
+    </div>
+  </div>
+
+  <button onclick="window.print()">Print ID Card</button>
+</div>
+
+<script src="generate_id_card.js"></script>
+</body>
+</html>
