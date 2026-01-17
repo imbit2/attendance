@@ -288,15 +288,56 @@ tr:last-child td {
     padding: 14px;
   }
 }
+/* =========================
+   BULK QR – FIX ALIGNMENT (SCREEN + PDF)
+========================= */
 
+.qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  page-break-inside: avoid;
+}
 
+.qr-id {
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
 
+/* Lock QR size strictly */
+.qr-box canvas,
+.qr-box img {
+  width: 76px !important;   /* 2cm */
+  height: 102px !important;/* 2.7cm */
+  object-fit: contain;
+}
 
+/* =========================
+   PRINT / PDF OVERRIDES
+========================= */
+@media print {
+  body {
+    background: #fff;
+  }
 
+  .page-container {
+    max-width: none;
+    padding: 0;
+  }
 
+  .qr-grid {
+    grid-template-columns: repeat(5, 1fr); /* 5 QR per row */
+    gap: 10px;
+  }
 
-
-
+  .qr-box {
+    box-shadow: none;
+    border: none;
+    padding: 8px;
+  }
+}
 
 
 
