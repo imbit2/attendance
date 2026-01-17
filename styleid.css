@@ -1,0 +1,78 @@
+/* ===== PAGE ===== */
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: #f2f2f2;
+}
+
+.page-container {
+  max-width: 420px;
+  margin: auto;
+  padding: 16px;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+/* ===== BUTTON ===== */
+button {
+  width: 100%;
+  padding: 16px;
+  font-size: 18px;
+  border-radius: 12px;
+  border: none;
+  background: #3498db;
+  color: white;
+  margin-top: 14px;
+}
+
+/* ===== PVC ID CARD ===== */
+.id-card {
+  width: 100%;
+  aspect-ratio: 1.586 / 1; /* CR80 ratio */
+  background: linear-gradient(135deg, #4e8fd3, #2f6fb5);
+  border-radius: 14px;
+  padding: 14px;
+  color: #fff;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* ===== HEADER ===== */
+.id-card-header {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* ===== CONTENT ===== */
+.id-card-body {
+  display: flex;
+  gap: 10px;
+}
+
+/* ===== DETAILS ===== */
+.id-details {
+  flex: 1;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.id-details p {
+  margin: 2px 0;
+}
+
+/* ===== QR ===== */
+.qr-box {
+  width: 72px;
+  height: 72px;
+  background: #fff;
+  padding: 4px;
+  border-radius: 6px;
+}
