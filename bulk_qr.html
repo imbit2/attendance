@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bulk QR Generator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f8;
+  padding: 15px;
+}
+
+h2 {
+  text-align: center;
+}
+
+select, button {
+  width: 100%;
+  padding: 16px;
+  font-size: 17px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  background: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+.qr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.qr-box {
+  background: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.qr-id {
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+/* QR preview size (screen only) */
+.qr-box canvas,
+.qr-box img {
+  width: 76px !important;   /* ~2cm */
+  height: 102px !important; /* ~2.7cm */
+}
+</style>
+</head>
+
+<body>
+
+<h2>Bulk Student QR Generator</h2>
+
+<select id="qrCount">
+  <option value="">Select number of QR</option>
+  <option value="5">5</option>
+  <option value="10">10</option>
+  <option value="20">20</option>
+  <option value="30">30</option>
+  <option value="40">40</option>
+  <option value="50">50</option>
+</select>
+
+<button onclick="generateBulk()">Generate QR Codes</button>
+<button onclick="exportPDF()">Export as A4 PDF</button>
+
+<div class="qr-grid" id="qrGrid"></div>
+
+<script>
+let generatedIds = [];
+
+function generateBulk() {
+  const count = parseInt(document.getElementById("qrCount").value);
+  if (!count) {
+    alert("Please select quantity");
+    return;
+  }
+
+  let last = localStorage.getItem("lastPTCId");
+  last = last ? parseInt(last) : 0;
+
+  const qrGrid = document.getElementById("qrGrid");
+  qrGrid.innerHTML = "";
+  generatedIds = [];
+
+  for (let i = 1; i <= count; i++) {
+    const num = last + i;
+    const studentId = "PTC" + String(num).padStart(4, "0");
+    generatedIds.push(studentId);
+
+    const box = document.createElement("div");
+    box.className = "qr-box";
+
+    const idDiv = document.createElement("div");
+    idDiv.className = "qr-id";
+    idDiv.innerText = studentId;
+
+    const qrDiv = document.createElement("div");
+
+    box.appendChild(idDiv);
+    box.appendChild(qrDiv);
+    qrGrid.appendChild(box);
+
+    new QRCode(qrDiv, {
+      text: studentId,
+      width: 80,
+      height: 108
+    });
+  }
+
+  localStorage.setItem("lastPTCId", last + count);
+}
+
+async function exportPDF() {
+  if (generatedIds.length === 0) {
+    alert("Generate QR codes first");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  const boxes = document.querySelectorAll(".qr-box");
+
+  let x = 10;
+  let y = 10;
+  let col = 0;
+
+  for (let i = 0; i < boxes.length; i++) {
+    const canvas = await html2canvas(boxes[i], { scale: 2 });
+    const img = canvas.toDataURL("image/png");
+
+    // Exact print size
+    pdf.addImage(img, "PNG", x, y, 20, 32);
+
+    col++;
+    x += 25;
+
+    if (col === 7) {
+      col = 0;
+      x = 10;
+      y += 37;
+
+      if (y > 260) {
+        pdf.addPage();
+        y = 10;
+      }
+    }
+  }
+
+  pdf.save("PTC_Student_QR.pdf");
+}
+</script>
+
+</body>
+</html>
