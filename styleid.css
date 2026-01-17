@@ -1,7 +1,7 @@
 /* RESET */
 * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 body {
@@ -12,70 +12,111 @@ body {
 
 /* PAGE CONTAINER */
 .page-container {
-  max-width: 420px;
-  margin: auto;
+  width: 100%;
   padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* PAGE HEADING */
 .page-title {
-  text-align: center;
   font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 16px;
+  font-weight: 700;
+  text-align: center;
+  margin: 12px 0 18px;
 }
 
 /* ID CARD */
 .id-card {
   width: 100%;
-  aspect-ratio: 1.6 / 1;
-  background: linear-gradient(135deg, #4a8bd6, #3b7fc4);
+  max-width: 360px;
+  height: 210px;
+  background: linear-gradient(135deg, #4a8fd8, #3b78b8);
   border-radius: 14px;
-  padding: 16px;
+  padding: 14px;
   color: #fff;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
+}
+
+/* CARD HEADER */
+.id-card-header {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+/* CARD BODY */
+.id-card-body {
+  display: flex;
+  gap: 12px;
   align-items: center;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.25);
 }
 
-/* LEFT DETAILS */
-.id-card .details {
-  width: 65%;
+/* STUDENT DETAILS */
+.details {
+  flex: 1;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
-.id-card .details p {
-  margin: 6px 0;
-  font-size: 16px;   /* 🔥 CHANGE FONT SIZE HERE */
+.details p {
+  margin: 2px 0;
   font-weight: 600;
 }
 
-/* QR AREA */
-.qr-box {
-  width: 35%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.details span {
+  font-weight: 400;
 }
 
-.qr-box img,
-.qr-box canvas {
-  width: 100px;
-  height: 100px;
+/* QR CODE */
+.qr-box {
+  width: 90px;
+  height: 90px;
   background: #fff;
-  padding: 4px;
-  border-radius: 6px;
+  padding: 6px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* BUTTON */
 button {
   width: 100%;
+  max-width: 360px;
   margin-top: 18px;
   padding: 16px;
   font-size: 18px;
+  font-weight: 700;
   border: none;
   border-radius: 12px;
-  background: #4a8bd6;
+  background: #4a8fd8;
   color: #fff;
-  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+/* PRINT MODE */
+@media print {
+  body {
+    background: #fff;
+  }
+
+  button,
+  .page-title {
+    display: none;
+  }
+
+  .id-card {
+    box-shadow: none;
+  }
 }
