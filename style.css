@@ -133,44 +133,51 @@ th {
 tr:last-child td {
   border-bottom: none;
 }
-/* ===== QR CODE CENTER ALIGNMENT (GLOBAL FIX) ===== */
-.qr-container,
-.qr-wrapper,
-.qr-box,
-.qr {
-  display: flex;
-  justify-content: center;
-  /*align-items: center;*/
-}
 
 /* =========================
-   QR GRID (BULK QR)
+   QR GRID (BULK QR) – FIXED
 ========================= */
 .qr-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 14px;
+  gap: 16px;
+  margin-top: 20px;
 }
 
+/* Each QR card */
 .qr-box {
   background: #fff;
-  padding: 10px;
-  text-align: center;
+  padding: 12px 8px;
   border-radius: 14px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
+/* Student ID text */
 .qr-id {
   font-weight: 700;
   font-size: 14px;
   margin-bottom: 6px;
+  text-align: center;
 }
 
-/* QR preview size (screen only) */
+/* QR wrapper */
+.qr-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* QR size (PRINT SAFE) */
 .qr-box canvas,
 .qr-box img {
   width: 76px !important;   /* ≈ 2cm */
   height: 102px !important; /* ≈ 2.7cm */
+  display: block;
 }
 
 .qr-container img,
@@ -281,6 +288,7 @@ tr:last-child td {
     padding: 14px;
   }
 }
+
 
 
 
