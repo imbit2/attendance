@@ -1,20 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <title>Student List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="stylesheet" href="style.css">
+  <script defer src="student_list.js"></script>
 </head>
+
 <body>
+
 <div class="page-container">
-<h2 class="page-title">Student List</h2>
-<input id="q" placeholder="Search ID or Name">
-<button onclick="load()">Search</button>
-<button onclick="clearSearch()">Clear</button>
 
-<table class="table" id="t"></table>
+  <h2 class="page-title">Student List</h2>
 
-<script src="student_list.js"></script>
+  <!-- Generate Bulk QR -->
+  <a href="bulk_qr.html" class="primary-btn">
+    Generate Bulk QR
+  </a>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <input
+      type="text"
+      id="searchInput"
+      class="input-field"
+      placeholder="Search by Student ID or Name"
+    >
+
+    <button onclick="searchStudent()" title="Search">
+      🔍
+    </button>
+
+    <button onclick="clearSearch()" title="Clear">
+      ❌
+    </button>
   </div>
+
+  <!-- Student Table -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody">
+        <!-- Filled by student_list.js -->
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
 </body>
 </html>
-
