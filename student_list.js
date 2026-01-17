@@ -28,9 +28,7 @@ function renderStudentList(list) {
 
     tr.innerHTML = `
       <td>
-        <a href="edit_student.html?id=${student.id}" class="student-link">
           ${student.id}
-        </a>
       </td>
       <td>${student.name || "-"}</td>
       <td>
@@ -70,3 +68,4 @@ function clearSearch() {
   document.getElementById("searchInput").value = "";
   renderStudentList(students);
 }
+
