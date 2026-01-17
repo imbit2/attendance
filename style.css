@@ -133,6 +133,15 @@ th {
 tr:last-child td {
   border-bottom: none;
 }
+/* ===== QR CODE CENTER ALIGNMENT (GLOBAL FIX) ===== */
+.qr-container,
+.qr-wrapper,
+.qr-box,
+.qr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* =========================
    QR GRID (BULK QR)
@@ -266,6 +275,7 @@ tr:last-child td {
     padding: 14px;
   }
 }
+
 
 
 
