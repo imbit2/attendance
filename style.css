@@ -197,43 +197,41 @@ tr:last-child td {
   text-align: center;
 }
 
-/* ===== Student List Top Controls ===== */
-
-.student-controls {
-  display: flex;
-  flex-wrap: wrap;           /* ✅ allow wrapping */
-  gap: 10px;
-  margin-bottom: 16px;
-}
-
-/* Generate Bulk QR button */
+/* ===== Generate Bulk QR Button ===== */
 .bulk-qr-btn {
   width: 100%;
-  font-size: 16px;
-  padding: 14px;
+  background: #3498db;
+  color: #fff;
+  font-size: 18px;
+  padding: 16px;
+  border-radius: 14px;
+  margin-bottom: 14px;
 }
 
-/* Search wrapper */
-.search-wrapper {
+/* ===== Search Row ===== */
+.search-row {
   display: flex;
-  width: 100%;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: 18px;
 }
 
 /* Search input */
-.search-wrapper input {
+.search-row input {
   flex: 1;
   padding: 14px;
   font-size: 16px;
-  border-radius: 12px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
 }
 
 /* Icon buttons */
 .icon-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 12px;
-  font-size: 18px;
+  width: 50px;
+  height: 50px;
+  background: #3498db;
+  color: #fff;
+  border-radius: 14px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -241,20 +239,15 @@ tr:last-child td {
 
 /* ===== Desktop Enhancement ===== */
 @media (min-width: 768px) {
-  .student-controls {
-    flex-wrap: nowrap;
-    align-items: center;
-  }
-
   .bulk-qr-btn {
     width: auto;
   }
 
-  .search-wrapper {
-    width: auto;
-    flex: 1;
+  .search-row {
+    max-width: 600px;
   }
 }
+
 
 /* =========================
    MOBILE SAFE AREA
@@ -270,4 +263,5 @@ tr:last-child td {
     padding: 14px;
   }
 }
+
 
