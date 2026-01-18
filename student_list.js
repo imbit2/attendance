@@ -20,9 +20,13 @@ function renderStudentList(list) {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td>${index + 1}</td>
       <td>${student.id}</td>
       <td>${student.name || "-"}</td>
+      <td>
+        <a href="edit_student.html?id=${student.id}" class="small-btn">
+          Edit
+        </a>
+      </td>
     `;
 
     tr.onclick = () => {
@@ -117,4 +121,5 @@ function clearSearch() {
   document.getElementById("searchInput").value = "";
   renderStudentList(students);
 }*/
+
 
