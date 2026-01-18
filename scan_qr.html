@@ -1,17 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Scan QR</title>
+  <title>Scan Attendance QR</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- QR Scanner Library -->
   <script src="https://unpkg.com/html5-qrcode"></script>
+
+  <script defer src="scan_qr.js"></script>
 </head>
+
 <body>
 <div class="page-container">
-<h3 class="page-title">Scanning...</h3>
-<div id="reader"></div>
-<audio id="beep" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
 
-<script src="scan_qr.js"></script>
-  </div>
+  <h2 class="page-title">Scan Attendance</h2>
+
+  <div id="qr-reader" style="width:100%;"></div>
+
+  <p id="scanStatus" class="success-text"></p>
+
+  <button class="danger-btn" onclick="stopScan()">
+    End Scan
+  </button>
+
+</div>
 </body>
 </html>
-
