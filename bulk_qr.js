@@ -139,13 +139,16 @@ function saveGeneratedIdsToStudents(ids) {
       students.push({
         id: id,
         name: "",
-        class: "",
-        phone: "",
-        notes: ""
+        guardian: "",
+        dob: "",
+        address: "",
+        belt: "",
+        phone: ""
       });
     }
   });
 
   localStorage.setItem("students", JSON.stringify(students));
 }
+
 
