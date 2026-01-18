@@ -55,7 +55,7 @@ async function exportPNG() {
 
   const canvas = await html2canvas(qrGrid, {
     backgroundColor: "#ffffff",
-    scale: 3   // higher = sharper image
+    scale: 2   // higher = sharper image
   });
 
   const imgData = canvas.toDataURL("image/png");
@@ -67,4 +67,5 @@ async function exportPNG() {
   link.click();
   document.body.removeChild(link);
 }
+
 
