@@ -29,9 +29,9 @@ function renderStudentList(list) {
       </td>
     `;
 
-    tr.onclick = () => {
+    /*tr.onclick = () => {
       window.location.href = `edit_student.html?id=${student.id}`;
-    };
+    };*/
 
     tbody.appendChild(tr);
   });
@@ -121,5 +121,6 @@ function clearSearch() {
   document.getElementById("searchInput").value = "";
   renderStudentList(students);
 }*/
+
 
 
