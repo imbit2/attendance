@@ -70,15 +70,20 @@ async function exportPDF() {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF("p", "mm", "a4");
 
-  const boxes = document.querySelectorAll(".qr-box");
+  const tables = document.querySelectorAll(".qr-box table");
+
+  const CARD_W = 20;   // 2cm
+  const CARD_H = 27;   // 2.7cm
+  const GAP_X = 4;
+  const GAP_Y = 5;
 
   let x = 10;
   let y = 10;
   let col = 0;
 
-  for (let i = 0; i < boxes.length; i++) {
-    const canvas = await html2canvas(boxes[i], {
-      scale: 3,
+  for (let i = 0; i < tables.length; i++) {
+    const canvas = await html2canvas(tables[i], {
+      scale: 4,
       backgroundColor: "#ffffff"
     });
 
@@ -86,25 +91,25 @@ async function exportPDF() {
 
     /* CUT BORDER */
     pdf.setLineWidth(0.2);
-    pdf.rect(x, y, 20, 27);
+    pdf.rect(x, y, CARD_W, CARD_H);
 
-    /* QR CARD IMAGE */
-    pdf.addImage(img, "PNG", x, y, 20, 27);
+    /* CENTER CONTENT PERFECTLY */
+    pdf.addImage(img, "PNG", x, y, CARD_W, CARD_H);
 
     col++;
-    x += 24;
+    x += CARD_W + GAP_X;
 
     if (col === 7) {
       col = 0;
       x = 10;
-      y += 32;
+      y += CARD_H + GAP_Y;
 
-      if (y > 260) {
+      if (y + CARD_H > 287) {
         pdf.addPage();
         y = 10;
       }
     }
   }
 
-  pdf.save("PTC_Bulk_QR_A4.pdf");
+  pdf.save("PTC_Bulk_QR_A4_Perfect.pdf");
 }
