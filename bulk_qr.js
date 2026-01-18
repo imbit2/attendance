@@ -67,5 +67,63 @@ async function exportPNG() {
   link.click();
   document.body.removeChild(link);
 }
+async function exportPDF() {
+  if (generatedIds.length === 0) {
+    alert("Generate QR codes first");
+    return;
+  }
 
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("p", "mm", "a4");
 
+  const cards = document.querySelectorAll(".qr-box");
+
+  const cardW = 20;
+  const cardH = 27;
+  const qrSize = 16;
+
+  let x = 10;
+  let y = 10;
+  let col = 0;
+
+  for (let i = 0; i < cards.length; i++) {
+    const qrCanvas = cards[i].querySelector("canvas");
+    const qrImg = qrCanvas.toDataURL("image/png");
+
+    const idText = generatedIds[i];
+
+    /* CUT BORDER */
+    pdf.setLineWidth(0.2);
+    pdf.rect(x, y, cardW, cardH);
+
+    /* ID TEXT */
+    pdf.setFontSize(8);
+    pdf.text(idText, x + cardW / 2, y + 5, { align: "center" });
+
+    /* QR IMAGE (NO DISTORTION) */
+    pdf.addImage(
+      qrImg,
+      "PNG",
+      x + (cardW - qrSize) / 2,
+      y + 7,
+      qrSize,
+      qrSize
+    );
+
+    col++;
+    x += cardW + 4;
+
+    if (col === 7) {
+      col = 0;
+      x = 10;
+      y += cardH + 6;
+
+      if (y + cardH > 280) {
+        pdf.addPage();
+        y = 10;
+      }
+    }
+  }
+
+  pdf.save("PTC_QR_A4_Print.pdf");
+}
