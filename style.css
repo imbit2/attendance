@@ -358,4 +358,47 @@ tr:last-child td {
     vertical-align: middle;
   }
 }
+.profile-container {
+  width: 700px;
+  margin: 20px auto;
+  border: 2px solid #000;
+  font-family: Arial, sans-serif;
+}
+
+.profile-header {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  padding: 10px;
+}
+
+.profile-body {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.student-details p {
+  margin: 6px 0;
+}
+
+.profile-qr {
+  text-align: center;
+}
+
+.qr-id {
+  margin-top: 6px;
+  font-weight: bold;
+}
+
+.profile-footer {
+  text-align: center;
+  padding: 10px;
+  border-top: 2px solid #000;
+}
+
+.profile-footer button {
+  padding: 6px 20px;
+  cursor: pointer;
+}
+
 
