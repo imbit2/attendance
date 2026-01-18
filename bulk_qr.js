@@ -43,6 +43,8 @@ function generateBulk() {
   }
 
   localStorage.setItem("lastPTCId", last + count);
+  
+  saveGeneratedIdsToStudents(generatedIds);
 }
 
 async function exportPNG() {
@@ -127,3 +129,23 @@ async function exportPDF() {
 
   pdf.save("PTC_QR_A4_Print.pdf");
 }
+
+function saveGeneratedIdsToStudents(ids) {
+  let students = JSON.parse(localStorage.getItem("students")) || [];
+
+  ids.forEach(id => {
+    const exists = students.some(s => s.id === id);
+    if (!exists) {
+      students.push({
+        id: id,
+        name: "",
+        class: "",
+        phone: "",
+        notes: ""
+      });
+    }
+  });
+
+  localStorage.setItem("students", JSON.stringify(students));
+}
+
