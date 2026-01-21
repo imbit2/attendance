@@ -1,68 +1,91 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const dateInput = document.getElementById("attendanceDate");
+
   const today = new Date().toISOString().split("T")[0];
-  document.getElementById("attendanceDate").value = today;
-  loadAttendance();
+  dateInput.value = today;
+
+  loadAttendance(today);
+
+  dateInput.addEventListener("change", () => {
+    loadAttendance(dateInput.value);
+  });
 });
 
-/* LOAD ATTENDANCE FOR SELECTED DATE */
-function loadAttendance() {
-  const date = document.getElementById("attendanceDate").value;
-
-  const attendance = JSON.parse(localStorage.getItem("attendance") || "{}");
-  const students = JSON.parse(localStorage.getItem("students") || "[]");
-
+function loadAttendance(date) {
+  const students = JSON.parse(localStorage.getItem("students")) || [];
+  const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
   const tbody = document.getElementById("attendanceTableBody");
+
   tbody.innerHTML = "";
 
-  if (!attendance[date]) {
-    tbody.innerHTML = `<tr><td colspan="3">No attendance found</td></tr>`;
+  if (students.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5">No students found</td></tr>`;
     return;
   }
 
-  students.forEach(student => {
-    if (attendance[date][student.id]) {
-      const tr = document.createElement("tr");
+  const dayAttendance = attendance[date] || {};
 
-      tr.innerHTML = `
-        <td>${student.id}</td>
-        <td>${student.name || "-"}</td>
-        <td>${attendance[date][student.id]}</td>
-      `;
+  let rows = students.map(s => {
+    const record = dayAttendance[s.id];
+    const scans = record?.scans || [];
 
-      tbody.appendChild(tr);
-    }
+    return {
+      id: s.id,
+      name: s.name || "-",
+      inTime: scans[0] || "-",
+      outTime: scans[1] || "-",
+      status: scans.length > 0 ? "Present" : "Absent"
+    };
+  });
+
+  rows.sort((a, b) => {
+  // Present first
+  if (a.status !== b.status) {
+    return a.status === "Present" ? -1 : 1;
+  }
+
+  // Both Absent → keep order
+  if (a.status === "Absent") return 0;
+
+  // Both Present → sort by IN time
+  return a.inTime.localeCompare(b.inTime);
+});
+
+  rows.forEach(r => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${r.id}</td>
+      <td>${r.name}</td>
+      <td>${r.inTime}</td>
+      <td>${r.outTime}</td>
+      <td style="font-weight:700;color:${r.status === "Present" ? "#27ae60" : "#e74c3c"}">
+        ${r.status}
+      </td>
+    `;
+    tbody.appendChild(tr);
   });
 }
 
-/* AUTO LOAD WHEN DATE CHANGES */
-document.getElementById("attendanceDate").addEventListener("change", loadAttendance);
-
-/* EXPORT CURRENT DATE TO EXCEL (CSV) */
+/* ===== EXPORT TO EXCEL (IN / OUT INCLUDED) ===== */
 function exportExcel() {
   const date = document.getElementById("attendanceDate").value;
-  const attendance = JSON.parse(localStorage.getItem("attendance") || "{}");
-  const students = JSON.parse(localStorage.getItem("students") || "[]");
+  const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  const students = JSON.parse(localStorage.getItem("students")) || [];
 
-  if (!attendance[date]) {
-    alert("No attendance to export");
-    return;
-  }
+  let csv = "Student ID,Name,IN,OUT,Status\n";
 
-  let csv = "Student ID,Name,Status\n";
+  students.forEach(s => {
+    const scans = attendance[date]?.[s.id]?.scans || [];
+    const inTime = scans[0] || "";
+    const outTime = scans[1] || "";
+    const status = scans.length > 0 ? "Present" : "Absent";
 
-  students.forEach(student => {
-    if (attendance[date][student.id]) {
-      csv += `${student.id},${student.name || ""},${attendance[date][student.id]}\n`;
-    }
+    csv += `${s.id},${s.name || ""},${inTime},${outTime},${status}\n`;
   });
 
-  const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-  const url = URL.createObjectURL(blob);
-
+  const blob = new Blob([csv], { type: "text/csv" });
   const link = document.createElement("a");
-  link.href = url;
+  link.href = URL.createObjectURL(blob);
   link.download = `Attendance_${date}.csv`;
-  document.body.appendChild(link);
   link.click();
-  document.body.removeChild(link);
 }
