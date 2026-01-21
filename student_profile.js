@@ -31,21 +31,32 @@ new QRCode(document.getElementById("qrBox"), {
   correctLevel: QRCode.CorrectLevel.H
 });
 /* ===== Attendance History ===== */
-const attendance = JSON.parse(localStorage.getItem("attendance") || "{}");
+function renderAttendanceHistory(studentId) {
+  const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  const historyDiv = document.getElementById("attendanceHistory");
 
-let historyHTML = "";
-let found = false;
+  let html = "";
+  let found = false;
 
-for (let date in attendance) {
-  if (attendance[date][student.id]) {
-    found = true;
-    historyHTML += `<p>${date} : ${attendance[date][student.id]}</p>`;
+  Object.keys(attendance).sort().forEach(date => {
+    const record = attendance[date][studentId];
+
+    if (record) {
+      found = true;
+
+      html += `
+        <div style="margin-bottom:8px;">
+          <strong>${date}</strong><br>
+          Status: ${record.status}<br>
+          In: ${record.inTime || "-"} &nbsp; | &nbsp; Out: ${record.outTime || "-"}
+        </div>
+      `;
+    }
+  });
+
+  if (!found) {
+    html = "<p>No attendance record found</p>";
   }
+
+  historyDiv.innerHTML = html;
 }
-
-if (!found) {
-  historyHTML = "<p>No attendance record found</p>";
-}
-
-document.getElementById("attendanceHistory").innerHTML = historyHTML;
-
