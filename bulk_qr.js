@@ -36,12 +36,21 @@ function generateBulk() {
     box.appendChild(qrDiv);
     qrGrid.appendChild(box);
 
-    new QRCode(qrDiv, {
+     const qrValue = `${studentId}|student_profile.html?id=${studentId}`;
+
+new QRCode(qrDiv, {
+  text: qrValue,
+  width: 76,
+  height: 76,
+  correctLevel: QRCode.CorrectLevel.H
+});
+
+    /* new QRCode(qrDiv, {
       text: studentId,
       width: 76,
       height: 76,
       correctLevel: QRCode.CorrectLevel.H
-    });
+    }); */
   }
 
   localStorage.setItem("lastPTCId", last + count);
@@ -321,6 +330,7 @@ function saveGeneratedIdsToStudents(ids) {
 
   localStorage.setItem("students", JSON.stringify(students));
 }*/
+
 
 
 
