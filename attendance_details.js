@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const dateInput = document.getElementById("attendanceDate");
 
-  const today = new Date().toISOString().split("T")[0];
+  const today = new Date().toLocaleDateString("en-CA");
   dateInput.value = today;
 
   loadAttendance(today);
@@ -89,3 +89,4 @@ function exportExcel() {
   link.download = `Attendance_${date}.csv`;
   link.click();
 }
+
