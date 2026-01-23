@@ -1,42 +1,34 @@
-let scanner;
+let qrScanner;
 const today = new Date().toISOString().split("T")[0];
 
 function startScan() {
-  const video = document.getElementById("qrVideo");
+  if (qrScanner) return;
 
-  // REQUIRED for mobile
-  video.setAttribute("playsinline", true);
+  qrScanner = new Html5Qrcode("qr-reader");
 
-  scanner = new Instascan.Scanner({
-    video: video,
-    mirror: true
+  qrScanner.start(
+    {
+      facingMode: "user" // ✅ FRONT CAMERA
+    },
+    {
+      fps: 10,
+      qrbox: 250
+    },
+    handleScan,
+    () => {} // ignore scan errors
+  ).catch(err => {
+    alert("Camera error: " + err);
   });
-
-  scanner.addListener("scan", handleScan);
-
-  Instascan.Camera.getCameras()
-    .then(cameras => {
-      if (!cameras || cameras.length === 0) {
-        alert("No camera found");
-        return;
-      }
-
-      // Prefer front camera safely
-      let cam = cameras.find(c =>
-        (c.name || "").toLowerCase().includes("front")
-      );
-
-      scanner.start(cam || cameras[0]);
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Camera permission denied or not supported");
-    });
 }
 
 function stopScan() {
-  if (scanner) scanner.stop();
-  window.close();
+  if (qrScanner) {
+    qrScanner.stop().then(() => {
+      qrScanner.clear();
+      qrScanner = null;
+      window.close();
+    });
+  }
 }
 
 function handleScan(content) {
@@ -59,17 +51,19 @@ function handleScan(content) {
   const now = new Date();
   const timeStr = now.toTimeString().slice(0, 5);
 
+  // ❌ Max 2 scans
   if (scans.length >= 2) {
     speak("Attendance already done");
     return;
   }
 
+  // ❌ 60 min gap
   if (scans.length === 1) {
     const [h, m] = scans[0].split(":").map(Number);
-    const firstScan = new Date();
-    firstScan.setHours(h, m, 0, 0);
+    const first = new Date();
+    first.setHours(h, m, 0, 0);
 
-    if ((now - firstScan) / 60000 < 60) {
+    if ((now - first) / 60000 < 60) {
       speak("Scan after 60 minutes");
       return;
     }
@@ -77,9 +71,11 @@ function handleScan(content) {
 
   scans.push(timeStr);
   localStorage.setItem("attendance", JSON.stringify(attendance));
+
   speak("Attendance successful");
 }
 
+/* 🔊 Voice feedback */
 function speak(text) {
   const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "en-IN";
