@@ -52,7 +52,9 @@ let scanLocked = false;
 
 function handleAttendance(content) {
   if (scanLocked) return;
-
+  
+  scanLocked = true;
+  
   const students = JSON.parse(localStorage.getItem("students")) || [];
   const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
 
@@ -93,13 +95,12 @@ function handleAttendance(content) {
   scans.push(timeStr);
   localStorage.setItem("attendance", JSON.stringify(attendance));
 
-  scanLocked = true;
   speak("Scan successful");
 
-  /* ⏸ Pause 3 seconds before next scan */
+  /* ⏸ Pause 5 seconds before next scan */
   setTimeout(() => {
     scanLocked = false;
-  }, 3000);
+  }, 5000);
 }
 
 /* 🔊 Voice feedback */
@@ -109,4 +110,5 @@ function speak(text) {
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
 }
+
 
