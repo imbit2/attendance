@@ -1,5 +1,5 @@
 let html5QrCode;
-const today = new Date().toISOString().split("T")[0];
+const today = new Date().toLocaleDateString("en-CA");
 
 window.addEventListener("load", startScan);
 
@@ -120,3 +120,4 @@ function speak(text) {
     scanLocked = false;
   }, 3000);
 }
+
