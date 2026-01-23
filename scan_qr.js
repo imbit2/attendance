@@ -7,15 +7,13 @@ function startScan() {
   qrScanner = new Html5Qrcode("qr-reader");
 
   qrScanner.start(
-    {
-      facingMode: "user" // ✅ FRONT CAMERA
-    },
+    { facingMode: "user" }, // ✅ FRONT CAMERA
     {
       fps: 10,
       qrbox: 250
     },
     handleScan,
-    () => {} // ignore scan errors
+    () => {}
   ).catch(err => {
     alert("Camera error: " + err);
   });
@@ -51,7 +49,7 @@ function handleScan(content) {
   const now = new Date();
   const timeStr = now.toTimeString().slice(0, 5);
 
-  // ❌ Max 2 scans
+  // ❌ Max 2 scans per day
   if (scans.length >= 2) {
     speak("Attendance already done");
     return;
