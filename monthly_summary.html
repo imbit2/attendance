@@ -4,35 +4,22 @@
   <title>Monthly Summary</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
 </head>
-<body> 
+
+<body>
 <div class="page-container">
-<h2 class="page-title">Monthly Summary</h2>
-<input type="month" id="m">
-<button onclick="load()">Load</button>
+  <h2 class="page-title">Monthly Summary</h2>
 
-<table class="table" id="t"></table>
+  <input type="month" id="monthInput">
+  <button onclick="loadSummary()">Load</button>
+  <button onclick="exportExcel()">Export Excel</button>
 
-<script>
-function load() {
-  let month = m.value;
-  let att = getAttendance();
-  let students = getStudents();
-  t.innerHTML = "<tr><th>ID</th><th>Name</th><th>Present</th></tr>";
-
-  students.forEach(s => {
-    let count = 0;
-    for (let d in att) {
-      if (d.startsWith(month) && att[d][s.id] === "Present") count++;
-    }
-    t.innerHTML += `<tr><td>${s.id}</td><td>${s.name}</td><td>${count}</td></tr>`;
-  });
-}
-</script>
+  <table id="summaryTable">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
 </div>
+
+<script src="monthly_summary.js"></script>
 </body>
 </html>
-
-
-
