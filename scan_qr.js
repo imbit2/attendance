@@ -2,10 +2,6 @@ let html5QrCode;
 let scanStarted = false;
 const today = new Date().toLocaleDateString("en-CA");
 
-/* window.addEventListener("load", () => {
-  setTimeout(startScan, 300); // small delay = stable camera startup
-}); */
-
 function startScan() {
   if (scanStarted) return;
   scanStarted = true;
@@ -13,36 +9,42 @@ function startScan() {
   html5QrCode = new Html5Qrcode("qr-reader");
 
   Html5Qrcode.getCameras()
-    .then(devices => {
-      if (!devices || devices.length === 0) {
-        alert("No camera found");
-        scanStarted = false;
-        return;
+  .then(devices => {
+    if (!devices || devices.length === 0) {
+      alert("No camera found");
+      scanStarted = false;
+      return;
+    }
+
+    // 🔥 FIX: Prefer camera with highest resolution (usually rear)
+    let bestCam = devices[0];
+    devices.forEach(cam => {
+      if (cam.id.length > bestCam.id.length) {
+        bestCam = cam;
       }
+    });
 
-      const backCam =
-        devices.find(d => d.label.toLowerCase().includes("back")) ||
-        devices[devices.length - 1];
-
-      return html5QrCode.start(
-        { deviceId: { exact: backCam.id } },
-        {
-          fps: 10,
-          qrbox: { width: 300, height: 300 },
-          aspectRatio: 1.0,
-          disableFlip: true,
-          experimentalFeatures: {
-            useBarCodeDetectorIfSupported: true
-          },
-          videoConstraints: {
-            width: { ideal: 1920 },
-            height: { ideal: 1080 }
-          }
+    return html5QrCode.start(
+      { deviceId: { exact: bestCam.id } },
+      {
+        fps: 10,
+        qrbox: { width: 300, height: 300 },
+        aspectRatio: 1.0,
+        disableFlip: true,
+        experimentalFeatures: {
+          useBarCodeDetectorIfSupported: true
         },
-        onScanSuccess,
-        onScanFailure
-      );
-    })
+        videoConstraints: {
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
+          facingMode: "environment"   // 💥 strongest trigger for back camera
+        }
+      },
+      onScanSuccess,
+      onScanFailure
+    );
+  })
+    
     .catch(err => {
       console.log("Camera error:", err);
       scanStarted = false;
@@ -148,5 +150,6 @@ function speak(text) {
     scanLocked = false;
   }, 3000);
 }
+
 
 
