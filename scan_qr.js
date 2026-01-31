@@ -27,7 +27,7 @@ function startScan() {
     return html5QrCode.start(
       { deviceId: { exact: bestCam.id } },
       {
-        fps: 10,
+        fps: 25,
         qrbox: { width: 300, height: 300 },
         aspectRatio: 1.0,
         disableFlip: true,
@@ -150,6 +150,7 @@ function speak(text) {
     scanLocked = false;
   }, 3000);
 }
+
 
 
 
