@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="Content-Security-Policy" content="frame-ancestors 'self';">
   <title>Scan QR</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
@@ -14,7 +15,7 @@
 <div class="page-container">
   <h2 class="page-title">QR Attendance Scanner</h2>
 
-  <div id="qr-reader" style="width:100%;"></div>
+  <div id="qr-reader" style="width:100%; height:350px;"></div>
 
   <button class="primary-btn danger-btn" onclick="stopScan()">
     End Scan
@@ -24,4 +25,5 @@
 <script src="scan_qr.js"></script>
 </body>
 </html>
+
 
