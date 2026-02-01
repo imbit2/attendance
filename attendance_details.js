@@ -1,3 +1,7 @@
+// ===============================
+// ATTENDANCE DETAILS PAGE
+// ===============================
+
 document.addEventListener("DOMContentLoaded", () => {
   const dateInput = document.getElementById("attendanceDate");
 
@@ -11,6 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+// ===============================
+// LOAD ATTENDANCE FOR A DATE
+// ===============================
 function loadAttendance(date) {
   const students = JSON.parse(localStorage.getItem("students")) || [];
   const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
@@ -23,11 +30,11 @@ function loadAttendance(date) {
     return;
   }
 
-  const dayAttendance = attendance[date] || {};
+  const dayData = attendance[date] || {};
 
   let rows = students.map(s => {
-    const record = dayAttendance[s.id];
-    const scans = record?.scans || [];
+    const rec = dayData[s.id] || { scans: [], status: "Absent" };
+    const scans = rec.scans || [];
 
     return {
       id: s.id,
@@ -38,19 +45,17 @@ function loadAttendance(date) {
     };
   });
 
+  // Sort: Present first → IN time
   rows.sort((a, b) => {
-  // Present first
-  if (a.status !== b.status) {
-    return a.status === "Present" ? -1 : 1;
-  }
+    if (a.status !== b.status)
+      return a.status === "Present" ? -1 : 1;
 
-  // Both Absent → keep order
-  if (a.status === "Absent") return 0;
+    if (a.status === "Absent") return 0;
 
-  // Both Present → sort by IN time
-  return a.inTime.localeCompare(b.inTime);
-});
+    return a.inTime.localeCompare(b.inTime);
+  });
 
+  // Render table
   rows.forEach(r => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -66,21 +71,27 @@ function loadAttendance(date) {
   });
 }
 
-/* ===== EXPORT TO EXCEL (IN / OUT INCLUDED) ===== */
+// ===============================
+// EXPORT EXCEL (CSV)
+// ===============================
 function exportExcel() {
   const date = document.getElementById("attendanceDate").value;
   const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
-  const students = JSON.parse(localStorage.getItem("students")) || [];
+  const students = JSON.parse(localStorage.getItem("students")) || {};
 
   let csv = "Student ID,Name,IN,OUT,Status\n";
 
   students.forEach(s => {
-    const scans = attendance[date]?.[s.id]?.scans || [];
-    const inTime = scans[0] || "";
-    const outTime = scans[1] || "";
-    const status = scans.length > 0 ? "Present" : "Absent";
+    const rec = attendance[date]?.[s.id] || { scans: [] };
+    const scans = rec.scans || [];
 
-    csv += `${s.id},${s.name || ""},${inTime},${outTime},${status}\n`;
+    csv += [
+      s.id,
+      s.name || "",
+      scans[0] || "",
+      scans[1] || "",
+      scans.length > 0 ? "Present" : "Absent"
+    ].join(",") + "\n";
   });
 
   const blob = new Blob([csv], { type: "text/csv" });
@@ -89,4 +100,3 @@ function exportExcel() {
   link.download = `Attendance_${date}.csv`;
   link.click();
 }
-
