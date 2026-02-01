@@ -8,6 +8,7 @@
   <!-- Global CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="page-container">
@@ -20,24 +21,24 @@
   <input type="date" id="attendanceDate" class="input-field">
 
   <!-- Export Button -->
-  <button class="primary-btn" onclick="exportExcel()">
+  <button class="primary-btn" style="margin-top: 12px;" onclick="exportExcel()">
     Export to Excel
   </button>
 
   <!-- Attendance Table -->
-  <div class="card">
+  <div class="card" style="margin-top: 18px;">
     <table>
       <thead>
         <tr>
-  <th>ID</th>
-  <th>Name</th>
-  <th>IN</th>
-  <th>OUT</th>
-  <th>Status</th>
-  </tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>IN</th>
+          <th>OUT</th>
+          <th>Status</th>
+        </tr>
       </thead>
       <tbody id="attendanceTableBody">
-        <!-- Data loads here -->
+        <!-- Rows will be injected here -->
       </tbody>
     </table>
   </div>
@@ -49,49 +50,3 @@
 
 </body>
 </html>
-
-<!--<!DOCTYPE html>
-<html>
-<head>
-  <title>Attendance Details</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js"></script>
-</head>
-<body>
-<div class="page-container">
-<h2 class="page-title">Attendance Details</h2>
-<input type="date" id="d">
-<button onclick="load()">Load</button>
-
-<p class="error" id="msg"></p>
-<table class="table" id="t"></table>
-
-<script>
-function load() {
-  let att = getAttendance();
-  let students = getStudents();
-  let date = d.value;
-  t.innerHTML = "";
-  msg.innerText = "";
-
-  if (!att[date]) {
-    msg.innerText = "No Data found";
-    return;
-  }
-
-  t.innerHTML = "<tr><th>ID</th><th>Name</th><th>Status</th></tr>";
-  students.forEach(s => {
-    t.innerHTML += `<tr>
-      <td>${s.id}</td>
-      <td>${s.name}</td>
-      <td>${att[date][s.id] || "Absent"}</td>
-    </tr>`;
-  });
-}
-</script>
-</div>
-</body>
-</html>
-
-
-
