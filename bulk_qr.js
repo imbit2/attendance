@@ -1,8 +1,8 @@
 let generatedIds = [];
 
-/* =========================
-   GENERATE BULK QR
-========================= */
+/* =====================================================
+      GENERATE BULK QR
+====================================================== */
 function generateBulk() {
   const count = parseInt(document.getElementById("qrCount").value);
   if (!count) {
@@ -10,18 +10,19 @@ function generateBulk() {
     return;
   }
 
-  let last = localStorage.getItem("lastPTCId");
-  last = last ? parseInt(last) : 0;
+  let last = parseInt(localStorage.getItem("lastPTCId") || "0");
 
   const qrGrid = document.getElementById("qrGrid");
   qrGrid.innerHTML = "";
   generatedIds = [];
 
   for (let i = 1; i <= count; i++) {
-    const num = last + i;
-    const studentId = "PTC" + String(num).padStart(4, "0");
+    const newNum = last + i;
+    const studentId = "PTC" + String(newNum).padStart(4, "0");
+
     generatedIds.push(studentId);
 
+    /* BUILD QR CARD */
     const box = document.createElement("div");
     box.className = "qr-box";
 
@@ -36,21 +37,24 @@ function generateBulk() {
     box.appendChild(qrDiv);
     qrGrid.appendChild(box);
 
-     new QRCode(qrDiv, {
+    new QRCode(qrDiv, {
       text: studentId,
-      width: 76,
-      height: 76,
+      width: 80,
+      height: 80,
       correctLevel: QRCode.CorrectLevel.H
     });
   }
 
+  /* Save last ID pointer */
   localStorage.setItem("lastPTCId", last + count);
+
+  /* Save student records */
   saveGeneratedIdsToStudents(generatedIds);
 }
 
-/* =========================
-   EXPORT PNG (SAFE)
-========================= */
+/* =====================================================
+       EXPORT PNG
+====================================================== */
 async function exportPNG() {
   const qrGrid = document.getElementById("qrGrid");
 
@@ -70,9 +74,9 @@ async function exportPNG() {
   link.click();
 }
 
-/* =========================
-   EXPORT PDF (FIXED ALIGNMENT)
-========================= */
+/* =====================================================
+      EXPORT PDF
+====================================================== */
 async function exportPDF() {
   if (generatedIds.length === 0) {
     alert("Generate QR codes first");
@@ -84,9 +88,9 @@ async function exportPDF() {
 
   const cards = document.querySelectorAll(".qr-box");
 
-  const cardW = 20;   // mm
-  const cardH = 27;   // mm
-  const qrSize = 16;  // mm
+  const cardW = 21;
+  const cardH = 28;
+  const qrSize = 16;
 
   const marginX = 10;
   const marginY = 10;
@@ -98,26 +102,23 @@ async function exportPDF() {
   let y = marginY;
   let col = 0;
 
-  for (let i = 0; i < cards.length; i++) {
-    const qrCanvas = cards[i].querySelector("canvas, img");
-    if (!qrCanvas) continue;
+  cards.forEach((card, idx) => {
+    const qrCanvas = card.querySelector("canvas, img");
+    if (!qrCanvas) return;
 
     const qrImg =
       qrCanvas.tagName === "CANVAS"
         ? qrCanvas.toDataURL("image/png")
         : qrCanvas.src;
 
-    const idText = generatedIds[i];
+    const idText = generatedIds[idx];
 
-    /* CUT BORDER */
     pdf.setLineWidth(0.2);
     pdf.rect(x, y, cardW, cardH);
 
-    /* ID */
     pdf.setFontSize(8);
     pdf.text(idText, x + cardW / 2, y + 5, { align: "center" });
 
-    /* QR (CENTERED, NO DISTORTION) */
     pdf.addImage(
       qrImg,
       "PNG",
@@ -140,19 +141,22 @@ async function exportPDF() {
         y = marginY;
       }
     }
-  }
+  });
 
   pdf.save("PTC_QR_A4_Print.pdf");
 }
 
-/* =========================
-   SAVE TO STUDENT LIST
-========================= */
+/* =====================================================
+      SAVE NEW IDS TO STUDENT LIST
+      (MOST IMPORTANT FIX!)
+====================================================== */
 function saveGeneratedIdsToStudents(ids) {
   let students = JSON.parse(localStorage.getItem("students")) || [];
 
+  const existingIds = new Set(students.map(s => s.id));
+
   ids.forEach(id => {
-    if (!students.some(s => s.id === id)) {
+    if (!existingIds.has(id)) {
       students.push({
         id,
         name: "",
@@ -160,10 +164,26 @@ function saveGeneratedIdsToStudents(ids) {
         dob: "",
         address: "",
         belt: "",
-        phone: ""
+        phone: "",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       });
     }
   });
+
+  /* 💥 IMPORTANT FIX:
+     Avoid corrupted student objects by validating all records */
+  students = students.map(s => ({
+    id: s.id || "",
+    name: s.name || "",
+    guardian: s.guardian || "",
+    dob: s.dob || "",
+    address: s.address || "",
+    belt: s.belt || "",
+    phone: s.phone || "",
+    createdAt: s.createdAt || "",
+    updatedAt: new Date().toISOString()
+  }));
 
   localStorage.setItem("students", JSON.stringify(students));
 }
