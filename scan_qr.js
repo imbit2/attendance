@@ -2,6 +2,14 @@ let html5QrCode;
 let scanStarted = false;
 const today = new Date().toLocaleDateString("en-CA");
 
+// Cache students in memory (avoid slow JSON.parse on every scan)
+let studentsCache = [];
+try {
+  studentsCache = JSON.parse(localStorage.getItem("students")) || [];
+} catch (e) {
+  studentsCache = [];
+}
+
 function startScan() {
   if (scanStarted) return;
   scanStarted = true;
@@ -9,42 +17,40 @@ function startScan() {
   html5QrCode = new Html5Qrcode("qr-reader");
 
   Html5Qrcode.getCameras()
-  .then(devices => {
-    if (!devices || devices.length === 0) {
-      alert("No camera found");
-      scanStarted = false;
-      return;
-    }
-
-    // 🔥 FIX: Prefer camera with highest resolution (usually rear)
-    let bestCam = devices[0];
-    devices.forEach(cam => {
-      if (cam.id.length > bestCam.id.length) {
-        bestCam = cam;
+    .then(devices => {
+      if (!devices || devices.length === 0) {
+        alert("No camera found");
+        scanStarted = false;
+        return;
       }
-    });
 
-    return html5QrCode.start(
-      { deviceId: { exact: bestCam.id } },
-      {
-        fps: 25,
-        qrbox: { width: 300, height: 300 },
-        aspectRatio: 1.0,
-        disableFlip: true,
-        experimentalFeatures: {
-          useBarCodeDetectorIfSupported: true
+      // Select best camera (rear)
+      let bestCam = devices[0];
+      devices.forEach(cam => {
+        if (cam.id.length > bestCam.id.length) bestCam = cam;
+      });
+
+      // Start scanner
+      return html5QrCode.start(
+        { deviceId: { exact: bestCam.id } },
+        {
+          fps: 25,
+          qrbox: { width: 300, height: 300 },
+          aspectRatio: 1.0,
+          disableFlip: true,
+          experimentalFeatures: {
+            useBarCodeDetectorIfSupported: true
+          },
+          videoConstraints: {
+            width: { ideal: 1920 },
+            height: { ideal: 1080 },
+            facingMode: "environment"
+          }
         },
-        videoConstraints: {
-          width: { ideal: 1920 },
-          height: { ideal: 1080 },
-          facingMode: "environment"   // 💥 strongest trigger for back camera
-        }
-      },
-      onScanSuccess,
-      onScanFailure
-    );
-  })
-    
+        onScanSuccess,
+        onScanFailure
+      );
+    })
     .catch(err => {
       console.log("Camera error:", err);
       scanStarted = false;
@@ -58,40 +64,49 @@ function stopScan() {
   html5QrCode.stop()
     .then(() => {
       scanStarted = false;
-      window.close();
+      location.reload();  // safer than window.close()
     })
     .catch(() => {
       scanStarted = false;
     });
 }
 
-function onScanSuccess(content) {
-  handleAttendance(content);
-}
-
+/* =========================
+   SCAN EVENT HANDLERS
+========================= */
+let scanLocked = false;
 let failCooldown = false;
 
-function onScanFailure(error) {
+function onScanSuccess(content) {
+  if (!scanLocked) handleAttendance(content);
+}
+
+function onScanFailure() {
   if (failCooldown) return;
   failCooldown = true;
-  setTimeout(() => failCooldown = false, 200); // 0.2 sec delay
+  setTimeout(() => failCooldown = false, 200);
 }
 
 /* =========================
-   ATTENDANCE LOGIC
+   SAFE ATTENDANCE LOGIC
 ========================= */
-let scanLocked = false;
-
 function handleAttendance(content) {
-  if (scanLocked) return;
+  scanLocked = true;
 
-  const students = JSON.parse(localStorage.getItem("students")) || [];
-  const attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  // Load attendance once per scan (small data)
+  let attendance = {};
+  try {
+    attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  } catch (e) {
+    attendance = {};
+  }
 
-  const student = students.find(s => s.id === content);
+  // Find student (fast lookup)
+  const student = studentsCache.find(s => s.id === content);
 
   if (!student) {
     speak("Invalid ID");
+    unlockScan();
     return;
   }
 
@@ -109,48 +124,54 @@ function handleAttendance(content) {
   const now = new Date();
   const timeStr = now.toTimeString().slice(0, 5);
 
+  // Already completed 2 scans
   if (scans.length >= 2) {
     speak("Attendance already done");
+    unlockScan();
     return;
   }
 
+  // SECOND SCAN LOGIC
   if (scans.length === 1) {
     const [h, m] = scans[0].split(":").map(Number);
     const firstScan = new Date();
     firstScan.setHours(h, m, 0, 0);
 
-    if ((now - firstScan) / 60000 < 60) {
+    const diffMins = (now - firstScan) / 60000;
+
+    if (diffMins < 60) {
       speak("Scan after sixty minutes");
+      unlockScan();
       return;
     }
 
     scans.push(timeStr);
     localStorage.setItem("attendance", JSON.stringify(attendance));
-    speak("Thank You");
+    speak("Today's attendance is successful");
+    unlockScan();
     return;
   }
 
+  // FIRST SCAN
   scans.push(timeStr);
   record.status = "Present";
   localStorage.setItem("attendance", JSON.stringify(attendance));
 
   speak("Welcome to Playmate");
+  unlockScan();
 }
 
+/* =========================
+   SPEECH + DELAY
+========================= */
 function speak(text) {
-  scanLocked = true;
-
   const msg = new SpeechSynthesisUtterance(text);
   msg.lang = "en-IN";
 
   speechSynthesis.cancel();
   speechSynthesis.speak(msg);
-
-  setTimeout(() => {
-    scanLocked = false;
-  }, 3000);
 }
 
-
-
-
+function unlockScan() {
+  setTimeout(() => { scanLocked = false; }, 3000);
+}
