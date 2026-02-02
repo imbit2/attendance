@@ -52,8 +52,10 @@ function loadPaymentPage() {
       <td>${month}</td>
 
       <td>
+      <div class="mark-buttons">
         <button class="tick" onclick="setStatus('${studentId}','${month}','Paid')">✔</button>
         <button class="cross" onclick="setStatus('${studentId}','${month}','Due')">✖</button>
+        </div>
       </td>
 
       <td>
@@ -82,4 +84,5 @@ function setStatus(studentId, month, value) {
 function goBack() {
   window.location.href = "fees.html";
 }
+
 
