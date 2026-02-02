@@ -1,80 +1,64 @@
+/* =========================================================
+   STUDENT HELPERS
+========================================================= */
 function getStudents() {
-  return JSON.parse(localStorage.getItem("students") || "[]");
+  return JSON.parse(localStorage.getItem("students")) || [];
 }
 
 function saveStudents(data) {
   localStorage.setItem("students", JSON.stringify(data));
 }
 
-function getAttendance() {
-  return JSON.parse(localStorage.getItem("attendance") || "{}");
-}
+/* =========================================================
+   ATTENDANCE HELPERS (NEW SYSTEM)
+========================================================= */
 
-function saveAttendance(data) {
-  localStorage.setItem("attendance", JSON.stringify(data));
-}
-
-// Internet date fallback-safe (India)
+// today's date in YYYY-MM-DD
 function today() {
-  let d = new Date();
-  return d.toISOString().slice(0, 10);
+  return new Date().toLocaleDateString("en-CA");
 }
 
-// called by scanner window
-function markPresentFromQR(id) {
-  let students = getStudents();
-  let student = students.find(s => s.id === id);
-  if (!student) {
-    alert("Student not found");
-    return;
-  }
-
-  let date = today();
-  let att = getAttendance();
-  if (!att[date]) att[date] = {};
-
-  if (att[date][id] === "Present") {
-    alert("Attendance already done");
-    return;
-  }
-
-  att[date][id] = "Present";
-  saveAttendance(att);
-  alert(student.name + " marked Present");
-}
+/* =========================================================
+   AUTO-MARK ABSENT FOR TODAY (RUNS ON PAGE LOAD)
+========================================================= */
 document.addEventListener("DOMContentLoaded", () => {
   autoStoreAbsentForToday();
 });
 
 function autoStoreAbsentForToday() {
-  const today = new Date().toLocaleDateString("en-CA");
+  const date = today();
 
-  let students = JSON.parse(localStorage.getItem("students")) || [];
-  let attendance = JSON.parse(localStorage.getItem("attendance")) || {};
+  let students = getStudents();
+  let todayAtt = JSON.parse(localStorage.getItem("attendance_today")) || {};
+  let history = JSON.parse(localStorage.getItem("attendance_history")) || {};
 
-  if (!attendance[today]) {
-    attendance[today] = {};
-  }
+  if (!history[date]) history[date] = {};
 
+  // loop all students with a valid name
   students.forEach(student => {
-    // 🔴 SKIP if student name is empty
     if (!student.name || student.name.trim() === "") return;
 
-    if (!attendance[today][student.id]) {
-      attendance[today][student.id] = {
+    // If student not already added today → mark Absent
+    if (!todayAtt[student.id]) {
+      todayAtt[student.id] = {
+        scans: [],          // no scans yet
         status: "Absent",
         inTime: "",
         outTime: ""
       };
+
+      history[date][student.id] = todayAtt[student.id];
     }
   });
 
-  localStorage.setItem("attendance", JSON.stringify(attendance));
+  // Save back
+  localStorage.setItem("attendance_today", JSON.stringify(todayAtt));
+  localStorage.setItem("attendance_history", JSON.stringify(history));
 }
-window.addEventListener("pageshow", function (event) {
-  // If page is loaded from back/forward cache
-  if (event.persisted) {
-    window.location.reload();
-  }
-});
 
+/* =========================================================
+   FIX SAFARI / MOBILE BACK-CACHE
+========================================================= */
+window.addEventListener("pageshow", event => {
+  if (event.persisted) window.location.reload();
+});
