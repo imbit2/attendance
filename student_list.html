@@ -15,13 +15,17 @@
 
   <h2 class="page-title">Student List</h2>
 
-  <button onclick="location.href='bulk_qr.html'">Generate Bulk QR</button>
+  <button onclick="location.href='bulk_qr.html'" class="primary-btn">
+    ➕ Generate Bulk QR
+  </button>
 
+  <!-- SEARCH BAR -->
   <div class="search-row">
     <input
       type="text"
       id="searchInput"
       placeholder="Search by Student ID or Name"
+      autocomplete="off"
     />
 
     <button class="icon-btn" onclick="searchStudent()">🔍</button>
@@ -29,17 +33,17 @@
   </div>
 
   <!-- Student Table -->
-  <div class="card">
+  <div class="card table-card">
     <table>
       <thead>
         <tr>
-          <th>ID</th>
+          <th style="width:120px;">ID</th>
           <th>Name</th>
-          <th>Action</th>
+          <th style="width:80px;">Action</th>
         </tr>
       </thead>
       <tbody id="studentTableBody">
-        <!-- Filled by student_list.js -->
+        <!-- Populated by student_list.js -->
       </tbody>
     </table>
   </div>
@@ -48,9 +52,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
