@@ -34,7 +34,7 @@ function loadPaymentPage() {
     saveFees(fees);
   }
 
-  document.getElementById("studentTitle").textContent =
+  document.getElementById("studentID").textContent =
     `Student ID: ${student.id}`;
   document.getElementById("studentTitle").textContent =
     `Fee Payment for: ${student.name}`;
@@ -82,3 +82,4 @@ function setStatus(studentId, month, value) {
 function goBack() {
   window.location.href = "fees.html";
 }
+
