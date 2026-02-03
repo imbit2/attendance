@@ -4,6 +4,10 @@ document.addEventListener("DOMContentLoaded", () => {
     window.location.href = "login.html";
   }
 });
+function logout() {
+  localStorage.removeItem("logged_role");
+  window.location.href = "login.html";
+}
 
 /* =========================================================
    STUDENT HELPERS
@@ -98,4 +102,5 @@ function ensureTodayIsInitialized() {
 window.addEventListener("pageshow", event => {
   if (event.persisted) window.location.reload();
 });
+
 
