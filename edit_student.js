@@ -26,7 +26,7 @@ document.getElementById("studentPhone").value = student.phone || "";
       UPDATE STUDENT DETAILS
 ========================================================== */
 function updateStudent() {
-  adminOnlu();
+  adminOnly();
   student.name = document.getElementById("studentName").value.trim();
   student.guardian = document.getElementById("studentGuardian").value.trim();
   student.dob = document.getElementById("studentDob").value;
@@ -79,4 +79,5 @@ function showHistory() {
 function reprintCard() {
   location.href = "generate_student_qr.html?id=" + student.id;
 }
+
 
