@@ -71,6 +71,7 @@ function loadPaymentPage() {
 
 // Update status
 function setStatus(studentId, month, value) {
+  adminOnly();
   let year = new Date().getFullYear();
   let fees = getFees();
 
@@ -79,5 +80,6 @@ function setStatus(studentId, month, value) {
 
   loadPaymentPage();
 }
+
 
 
