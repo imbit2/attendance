@@ -92,7 +92,7 @@ function loadStudentTable() {
       <td>${stu.name}</td>
       <td>
       <a href="fees_payment.html"
-         onclick="openFeePayment('${s.id}')">
+         onclick="openFeePayment('${stu.id}')">
          Manage
       </a>
     </td>
@@ -146,6 +146,7 @@ function exportFeesExcel() {
   a.download = `Fees_${year}.csv`;
   a.click();
 }
+
 
 
 
