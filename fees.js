@@ -90,10 +90,12 @@ function loadStudentTable() {
     tr.innerHTML = `
       <td>${stu.id}</td>
       <td>${stu.name}</td>
+      <td>
       <a href="fees_payment.html"
          onclick="openFeePayment('${s.id}')">
          Manage
       </a>
+    </td>
     `;
     tbody.appendChild(tr);
   });
@@ -144,6 +146,7 @@ function exportFeesExcel() {
   a.download = `Fees_${year}.csv`;
   a.click();
 }
+
 
 
 
