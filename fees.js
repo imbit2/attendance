@@ -62,7 +62,7 @@ function autoCreateYear(year) {
 // STUDENT TABLE
 // =========================
 function loadStudentTable() {
-  let tbody = document.querySelector("#feesTable tbody");
+  let tbody = document.querySelector("#summaryTable tbody");
   tbody.innerHTML = "";
 
   let students = getStudents();
@@ -146,6 +146,7 @@ function exportFeesExcel() {
   a.download = `Fees_${year}.csv`;
   a.click();
 }
+
 
 
 
