@@ -1,3 +1,10 @@
+document.addEventListener("DOMContentLoaded", () => {
+  const role = localStorage.getItem("logged_role");
+  if (!role) {
+    window.location.href = "login.html";
+  }
+});
+
 /* =========================================================
    STUDENT HELPERS
 ========================================================= */
@@ -91,3 +98,4 @@ function ensureTodayIsInitialized() {
 window.addEventListener("pageshow", event => {
   if (event.persisted) window.location.reload();
 });
+
