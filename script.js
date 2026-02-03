@@ -54,6 +54,7 @@ function adminOnly() {
   if (role !== "admin") {
     alert("Only admin can perform this action.");
     throw new Error("Unauthorized action by coach.");
+     return;
   }
 }
 
@@ -142,4 +143,5 @@ function ensureTodayIsInitialized() {
 window.addEventListener("pageshow", event => {
   if (event.persisted) window.location.reload();
 });
+
 
